@@ -1,5 +1,10 @@
 on:
   workflow_call:
+    inputs:
+      translation_directory:
+        description: directory to be passed to pybabel --directory=...
+        required: false
+        type: string
 
 jobs:
   build-n-publish:
@@ -8,3 +13,4 @@ jobs:
       - name: hello
         run: |
           echo "Hello this is Roger; OVER."
+          echo "Received translation-dir is " ${{ inputs.translation_directory }} "; OVER."
