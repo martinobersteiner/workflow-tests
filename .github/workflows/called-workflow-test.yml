@@ -20,11 +20,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -U setuptools wheel
+          pip install -U babel build
       - name: compile .po files
         env:
           TRANSLATION_DIRECTORY: ${{inputs.translation_directory}}
         run: |
-          pip install -U babel
           if [[ -f setup.cfg ]] && grep -q "compile_catalog" setup.cfg
           then
             python setup.py compile_catalog
@@ -38,7 +38,6 @@ jobs:
           find . -name "*.mo"
       - name: package would be built here
         run: |
-          pip install -U build
           echo "python -m build"  # use this call backend configured in pyproject.toml rather than hardcoding use of setuptools
       - name: package would be published here
         run: |
