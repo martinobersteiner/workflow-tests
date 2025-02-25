@@ -36,3 +36,10 @@ jobs:
       - name: check for compilation
         run: |
           find . -name "*.mo"
+      - name: package would be built here
+        run: |
+          pip install -U build
+          echo "python -m build"  # use this call backend configured in pyproject.toml rather than hardcoding use of setuptools
+      - name: package would be published here
+        run: |
+          echo "use github-action to publish"
