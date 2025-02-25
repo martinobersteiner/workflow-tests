@@ -2,7 +2,8 @@ on:
   workflow_call:
     inputs:
       translation_directory:
-        description: directory to be passed to pybabel --directory=...
+        default: ""
+        description: directory to be passed to pybabel compile --directory=...
         required: false
         type: string
 
@@ -10,7 +11,34 @@ jobs:
   build-n-publish:
     runs-on: ubuntu-latest
     steps:
-      - name: hello
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.9
+      - name: Install dependencies
         run: |
-          echo "Hello this is Roger; OVER."
-          echo "Received translation-dir is " ${{ inputs.translation_directory }} "; OVER."
+          python -m pip install --upgrade pip
+          pip install -U setuptools wheel
+          pip install -U babel build
+      - name: compile .po files
+        env:
+          TRANSLATION_DIRECTORY: ${{inputs.translation_directory}}
+        run: |
+          if [[ -f setup.cfg ]] && grep -q "compile_catalog" setup.cfg
+          then
+            python setup.py compile_catalog
+          elif [[ -n "$TRANSLATION_DIRECTORY" ]]
+          then
+            echo "$TRANSLATION_DIRECTORY"
+            pybabel compile --directory="$TRANSLATION_DIRECTORY" --use-fuzzy
+          fi
+      - name: check for compilation
+        run: |
+          find . -name "*.mo"
+      - name: package would be built here
+        run: |
+          echo "python -m build"  # use this call backend configured in pyproject.toml rather than hardcoding use of setuptools
+      - name: package would be published here
+        run: |
+          echo "use github-action to publish"
