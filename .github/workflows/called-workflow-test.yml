@@ -2,6 +2,7 @@ on:
   workflow_call:
     inputs:
       translation_directory:
+        default: ""
         description: directory to be passed to pybabel compile --directory=...
         required: false
         type: string
@@ -20,15 +21,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -U setuptools wheel
       - name: compile .po files
+        env:
+          TRANSLATION_DIRECTORY: ${{inputs.translation_directory}}
         run: |
           pip install -U babel
           if [[ -f setup.cfg ]] && grep -q "compile_catalog" setup.cfg
           then
             python setup.py compile_catalog
-          elif [[ -n "${{inputs.translation_directory}}" ]]
+          elif [[ -n "$TRANSLATION_DIRECTORY" ]]
           then
-            echo 'pybabel compile --directory=${{inputs.translation_directory}} --use-fuzzy'
-            pybabel compile --directory=${{inputs.translation_directory}} --use-fuzzy  # TODO: sanitize input
+            echo "$TRANSLATION_DIRECTORY"
+            pybabel compile --directory="$TRANSLATION_DIRECTORY" --use-fuzzy
           fi
       - name: check for compilation
         run: |
