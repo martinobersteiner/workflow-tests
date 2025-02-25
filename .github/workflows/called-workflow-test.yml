@@ -10,6 +10,7 @@ jobs:
   build-n-publish:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Set up Python 3.9
         uses: actions/setup-python@v5
         with:
@@ -17,14 +18,17 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -U setuptools wheel babel
+          pip install -U setuptools wheel
       - name: compile .po files
         run: |
-          if [[ -f setup.cfg && grep -q "compile_catalog" setup.cfg ]]
+          pip install -U babel
+          if [[ -f setup.cfg ]] && grep -q "compile_catalog" setup.cfg
           then
             python setup.py compile_catalog
           elif [[ -n "${{inputs.translation_directory}}" ]]
-            pybabel compile --directory=${{inputs.translation_directory}} --use_fuzzy  # TODO: sanitize input
+          then
+            echo 'pybabel compile --directory=${{inputs.translation_directory}} --use-fuzzy'
+            pybabel compile --directory=${{inputs.translation_directory}} --use-fuzzy  # TODO: sanitize input
           fi
       - name: check for compilation
         run: |
