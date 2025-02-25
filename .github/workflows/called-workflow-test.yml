@@ -7,4 +7,4 @@ jobs:
     steps:
       - name: hello
         run: |
-          echo "Hello this is Roger. OVER."
+          echo "Hello this is Roger; OVER."
