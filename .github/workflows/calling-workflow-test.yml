@@ -1,0 +1,13 @@
+on:
+  pull_request:
+    branches: main
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Reason"
+        required: false
+        default: "Manual trigger"
+
+jobs:
+  build-n-publish:
+    uses: ./.github/workflows/called-workflow-tests.yml
