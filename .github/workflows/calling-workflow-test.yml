@@ -10,4 +10,6 @@ on:
 
 jobs:
   build-n-publish:
-    uses: ./.github/workflows/called-workflow-tests.yml
+    uses: ./.github/workflows/called-workflow-test.yml
+    with:
+      translation_directory: ./workflow_tests/translations/
