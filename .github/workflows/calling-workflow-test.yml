@@ -12,4 +12,4 @@ jobs:
   build-n-publish:
     uses: ./.github/workflows/called-workflow-test.yml
     with:
-      translation_directory: ./workflow_tests/translations/
+      translation_directory: ./workflow_tests/nonexistent-dir/
