@@ -17,5 +17,9 @@ jobs:
       - name: Setup uv
         uses: astral-sh/setup-uv@v5
         with:
-          enable-cache: false
+          cache-dependency-glob: ""
+          enable-cache: true
           python-version: 3.12
+      - name: fill cache
+        run: |
+          uv pip install build
