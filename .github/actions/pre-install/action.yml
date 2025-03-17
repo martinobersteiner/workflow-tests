@@ -4,3 +4,4 @@ runs:
   steps:
     - name: name of action-step to install xmlsec1
       run: sudo apt-get install --yes xmlsec1
+      shell: bash
