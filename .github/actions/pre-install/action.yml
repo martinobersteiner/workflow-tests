@@ -1,0 +1,6 @@
+name: name of action to install xmlsec1
+runs:
+  using: composite
+  steps:
+    - name: name of action-step to install xmlsec1
+      run: sudo apt-get install --yes xmlsec1
