@@ -30,6 +30,11 @@ jobs:
             python setup.py compile_catalog
           elif [[ -n "$TRANSLATION_DIRECTORY" ]]
           then
+            if [[ ! -d "$TRANSLATION_DIRECTORY" ]]
+            then
+              echo "given translation-directory $TRANSLATION_DIRECTORY does not exist"
+              exit 1
+            fi
             echo "$TRANSLATION_DIRECTORY"
             pybabel compile --directory="$TRANSLATION_DIRECTORY" --use-fuzzy
           fi
