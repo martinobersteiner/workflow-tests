@@ -1,0 +1,21 @@
+on:
+  pull_request:
+    branches: main
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Reason"
+        required: false
+        default: "Manual trigger"
+
+jobs:
+  use-xmlsec1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install xmlsec
+        uses: ./.github/actions/pre-install
+      - name: use xmlsec1
+        run: |
+          xmlsec1 --version
